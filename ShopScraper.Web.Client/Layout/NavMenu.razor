@@ -1,0 +1,14 @@
+﻿<MudNavMenu>
+	<MudText Style="padding: 8px 8px 8px 16px; color:  #666; font-weight: 600" Typo="Typo.body2">Основное</MudText>
+	
+	<MudText Style="padding: 8px 8px 8px 16px; color:  #666; font-weight: 600" Typo="Typo.body2">Аккаунт</MudText>
+	<AuthorizeView>
+		<Authorized>
+			<MudNavLink Href="Account/Manage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ManageAccounts">Управление профилем</MudNavLink>
+		</Authorized>
+		<NotAuthorized>
+			<MudNavLink Href="Account/Register" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.SwitchAccount">Регистрация</MudNavLink>
+			<MudNavLink Href="Account/Login" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">Войти</MudNavLink>
+		</NotAuthorized>
+	</AuthorizeView>
+</MudNavMenu>

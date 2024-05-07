@@ -1,0 +1,59 @@
+/*
+	This CSS file matches the color scheme from MudBlazor to Bootstrap when utilized for authentication.
+	The file remains available at all times for demonstration purposes,
+	but it is exclusively employed in the 'App.razor' component when authentication is enabled.
+*/
+
+.btn-primary {
+    text-transform: uppercase;
+    --bs-btn-bg: var(--mud-palette-primary) !important;
+    --bs-btn-hover-bg: var(--mud-palette-primary-darken) !important;
+}
+
+.nav-pills {
+    --bs-nav-pills-link-active-bg: var(--mud-palette-primary) !important;
+}
+
+.nav {
+    --bs-nav-link-color: var(--mud-palette-primary) !important;
+    --bs-nav-link-hover-color: var(--mud-palette-primary-darken) !important;
+}
+
+:root{
+    --dark-back-opacity: .8;
+    --dark-back-opacity-2: .4;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+.fullscreen-first{
+    min-height: calc(100vh - var(--mud-appbar-height));
+}
+
+.fullscreen{
+    min-height: 100vh;
+}
+
+.center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.full-back{
+    object-fit: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+
+.pd-1{
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.s-one{
+    background: #eee;
+}

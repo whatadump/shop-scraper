@@ -1,0 +1,12 @@
+﻿@page "/Counter"
+
+<PageTitle>Служебная страница</PageTitle>
+<MainLayoutTitle>Служебная страница</MainLayoutTitle>
+<h3>Вы попали на страницу теста системы.</h3>
+<h4>Если при нажатии на кнопку число меняется, интерактивность все еще работает</h4>
+<h5>Кнопка нажата @Count раз</h5>
+<MudButton Variant="Variant.Outlined" OnClick="@(() => Count++)">Кнопка</MudButton>
+
+@code {
+    private int Count { get; set; }
+}

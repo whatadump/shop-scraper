@@ -1,0 +1,34 @@
+﻿@page "/Account/Manage/PersonalData"
+
+@inject IdentityUserAccessor UserAccessor
+
+<PageTitle>Личные ланные</PageTitle>
+
+<StatusMessage />
+<h3>Личные ланные</h3>
+
+<div class="row">
+    <div class="col-md-6 column-gap-4 flex flex-column">
+        <p>Ваш аккаунт содержит ваши персональные данные. Вы можете их скачать или удалить с помощью выбора функций ниже.</p>
+        <p>
+            <strong>Удаление данных нельзя обратить.</strong>
+        </p>
+        <form action="Account/Manage/DownloadPersonalData" method="post">
+            <AntiforgeryToken />
+            <button class="btn btn-primary" type="submit">Скачать</button>
+        </form>
+        <p>
+            <a href="Account/Manage/DeletePersonalData" class="btn btn-danger">Удалить</a>
+        </p>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _ = await UserAccessor.GetRequiredUserAsync(HttpContext);
+    }
+}
