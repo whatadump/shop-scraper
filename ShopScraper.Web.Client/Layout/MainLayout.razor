@@ -10,34 +10,40 @@
 
 <MudLayout>
     <MudAppBar Elevation="0">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/>
-        <MudText Typo="Typo.h6">
-            <SectionOutlet SectionName="LAYOUT_TITLE"/>
-        </MudText>
-        <MudSpacer/>
-        <AuthorizeView>
-            <MudMenu>
-                <ActivatorContent>
-                    <MudAvatar Variant="Variant.Outlined">
-                        <MudIcon Icon="@Icons.Material.Filled.Person"></MudIcon>
-                    </MudAvatar>
-                </ActivatorContent>
-                <ChildContent>
-                    <MudMenuItem><MudLink Href="/Account/Logout">Выйти</MudLink></MudMenuItem>
-                </ChildContent>
-            </MudMenu>
-        </AuthorizeView>
+        <MudContainer>
+            <MudText Typo="Typo.h6">GigaMagazin</MudText>
+        </MudContainer>
+        
+        @* <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/> *@
+        @* <MudText Typo="Typo.h6"> *@
+        @*     <SectionOutlet SectionName="LAYOUT_TITLE"/> *@
+        @* </MudText> *@
+        @* <MudSpacer/> *@
+        @* <AuthorizeView> *@
+        @*     <MudMenu> *@
+        @*         <ActivatorContent> *@
+        @*             <MudAvatar Variant="Variant.Outlined"> *@
+        @*                 <MudIcon Icon="@Icons.Material.Filled.Person"></MudIcon> *@
+        @*             </MudAvatar> *@
+        @*         </ActivatorContent> *@
+        @*         <ChildContent> *@
+        @*             <MudMenuItem><MudLink Href="/Account/Logout">Выйти</MudLink></MudMenuItem> *@
+        @*         </ChildContent> *@
+        @*     </MudMenu> *@
+        @* </AuthorizeView> *@
     </MudAppBar>
-    <MudDrawer @bind-Open="DrawerOpen" Elevation="2">
-        <MudDrawerHeader Style="padding-left: 16px">
-            <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="3">
-                <MudText Typo="Typo.h6">Dudos Fitness</MudText>
-            </MudStack>
-        </MudDrawerHeader>
-        <NavMenu/>
-    </MudDrawer>
+    @* <MudDrawer @bind-Open="DrawerOpen" Elevation="2"> *@
+    @*     <MudDrawerHeader Style="padding-left: 16px"> *@
+    @*         <MudStack AlignItems="AlignItems.Center" Row="true" Spacing="3"> *@
+    @*             <MudText Typo="Typo.h6">Dudos Fitness</MudText> *@
+    @*         </MudStack> *@
+    @*     </MudDrawerHeader> *@
+    @*     <NavMenu/> *@
+    @* </MudDrawer> *@
     <MudMainContent Class="px-5">
-        @Body
+        <MudContainer Class="pt-5">
+            @Body
+        </MudContainer>
     </MudMainContent>
 </MudLayout>
 

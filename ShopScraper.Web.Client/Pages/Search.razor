@@ -1,0 +1,70 @@
+﻿@page "/search/{searchQuery}"
+@using ShopScraper.Infrastructure.DTO
+@using ShopScraper.Infrastructure.Interfaces
+
+@inject NavigationManager Navigation
+@inject IScraper Scraper
+@inject ILogger<Search> Logger
+
+<PageTitle>Главная</PageTitle>
+<div class="d-flex flex-column align-items-center justify-content-center" style="margin-top: 7%">
+    <MudText Typo="Typo.h3" Class="fw-light">GigaMagazin</MudText>
+    <SearchBar Initial="@searchQuery" Class="mt-5" OnSearch="@OnSearch"/>
+</div>
+<MudCard Class="mt-10">
+    <MudTable T="ScrapingResultDTO" Items="_results">
+        <HeaderContent>
+            <MudTh>
+                Название
+            </MudTh>
+            <MudTh>
+                Ссылка
+            </MudTh>
+            <MudTh>
+                Изображение
+            </MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                @context.Title
+            </MudTd>
+            <MudTd>
+                <MudLink Href="@context.OriginalUrl" Target="_blank">Ссылка...</MudLink>
+            </MudTd>
+            <MudTd>
+                <MudImage Src="@context.ImageUrl" Width="30" Height="30"/>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudCard>
+@code {
+    
+    [Parameter]
+    public string searchQuery { get; set; }
+    
+    private IReadOnlyCollection<ScrapingResultDTO> _results { get; set; }
+    
+    private async Task OnSearch(string searchQuery)
+    {
+        Navigation.NavigateTo($"/search/{searchQuery}");
+    }
+
+    private async Task UpdateData()
+    {
+        _results = await Scraper.Find(new ScrapingRequest(searchQuery));
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (!(string.IsNullOrWhiteSpace(searchQuery) && string.IsNullOrEmpty(searchQuery)))
+            {
+                await UpdateData();
+                Logger.LogInformation($"Найдено {_results.Count} товаров");
+            }
+        }
+    }
+
+}

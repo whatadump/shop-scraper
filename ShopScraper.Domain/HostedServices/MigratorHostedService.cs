@@ -12,7 +12,7 @@ public class MigratorHostedService(IServiceProvider provider, ILogger<MigratorHo
     {
         using var scope = provider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        logger.LogInformation("Накатываем миграции");
+        logger.LogInformation("Накатываем миграции");   
         await context.Database.MigrateAsync(cancellationToken: cancellationToken);
         logger.LogInformation("Накатка миграций завершена");
     }

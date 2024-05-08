@@ -1,6 +1,19 @@
 ﻿@page "/"
-<h3>Index</h3>
 
-@code {
-    
+@inject NavigationManager Navigator
+
+<PageTitle>GigaMagazin</PageTitle>
+<div class="d-flex flex-column align-items-center justify-content-center" style="margin-top: 7%">
+    <MudText Typo="Typo.h3" Class="fw-light">GigaMagazin</MudText>
+    <SearchBar Class="mt-5" OnSearch="OnSearch"/>
+</div>
+
+
+@code{
+
+    private async Task OnSearch(string searchQuery)
+    {
+        Navigator.NavigateTo($"/search/{searchQuery}");
+    }
+
 }
