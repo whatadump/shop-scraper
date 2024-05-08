@@ -1,6 +1,8 @@
 ﻿@page "/search/{searchQuery}"
 @using ShopScraper.Infrastructure.DTO
 @using ShopScraper.Infrastructure.Interfaces
+@using System.Globalization
+@using Size = MudBlazor.Size
 
 @inject NavigationManager Navigation
 @inject IScraper Scraper
@@ -11,36 +13,117 @@
     <MudText Typo="Typo.h3" Class="fw-light">GigaMagazin</MudText>
     <SearchBar Initial="@searchQuery" Class="mt-5" OnSearch="@OnSearch"/>
 </div>
-<MudCard Class="mt-10">
-    <MudTable T="ScrapingResultDTO" Items="_results">
-        <HeaderContent>
-            <MudTh>
-                Название
-            </MudTh>
-            <MudTh>
-                Ссылка
-            </MudTh>
-            <MudTh>
-                Изображение
-            </MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd>
-                @context.Title
-            </MudTd>
-            <MudTd>
-                <MudLink Href="@context.OriginalUrl" Target="_blank">Ссылка...</MudLink>
-            </MudTd>
-            <MudTd>
-                <MudImage Src="@context.ImageUrl" Width="30" Height="30"/>
-            </MudTd>
-        </RowTemplate>
-    </MudTable>
-</MudCard>
+<div class="w-100 d-flex justify-content-end">
+    <MudButtonGroup Variant="Variant.Filled" DisableElevation="true">
+        <MudIconButton OnClick="@(() => _isTable = false)" Icon="@Icons.Material.Filled.GridView"/>
+        <MudIconButton OnClick="@(() => _isTable = true)" Icon="@Icons.Material.Filled.List"/>
+    </MudButtonGroup>
+</div>
+
+@if (_isTable)
+{
+    <MudPaper Class="mt-10">
+        <MudTable Sort T="ScrapingResultDTO" Items="_results">
+            <HeaderContent>
+                <MudTh>
+                    Название
+                </MudTh>
+                <MudTh>
+                    Ссылка
+                </MudTh>
+                <MudTh>
+                    Изображение
+                </MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>
+                    @context.Title
+                </MudTd>
+                <MudTd>
+                    <MudLink Href="@context.OriginalUrl" Target="_blank">Ссылка...</MudLink>
+                </MudTd>
+                <MudTd>
+                    <MudImage Src="@context.ImageUrl" Width="30" Height="30"/>
+                </MudTd>
+            </RowTemplate>
+            <LoadingContent>
+                <MudSkeleton Animation="Animation.Wave"/>
+            </LoadingContent>
+        </MudTable>
+    </MudPaper>
+}
+@if (!_isTable && _results is { Count: >0 })
+{
+    <MudGrid Class="mt-10">
+        @foreach (var item in _results)
+        {
+            <MudItem xs="12" md="3">
+                <MudCard>
+                    <MudCardHeader>
+                        <MudChip Size="Size.Small">@item.Article</MudChip>
+                    </MudCardHeader>
+                    <MudCardMedia Image="@item.ImageUrl"/>
+                    <MudCardContent>
+                        <MudText Typo="Typo.body2">@(item.Title[..int.Min(90, item.Title.Length)])...</MudText>
+                        <MudText Class="mt-4" Typo="Typo.h6">@item.Price.ToString(CultureInfo.InvariantCulture) р</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+
+@if (_isLoading)
+{
+    <div class="mt-10">
+        @if (_isTable)
+        {
+            <MudSkeleton Height="50px" Animation="Animation.Wave" />
+            <MudSkeleton Height="50px" Animation="Animation.Wave" />
+            <MudSkeleton Height="50px" Animation="Animation.Wave" />
+            <MudSkeleton Height="50px" Animation="Animation.Wave" /> 
+        }
+        else
+        {
+            <MudGrid Class="d-flex align-items-center">
+                @for (var i = 0; i < 3; i++)
+                {
+                    <MudItem xs="12" md="3" lg="4">
+                        <MudCard>
+                            <MudCardHeader>
+                                <CardHeaderAvatar>
+                                    <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Height="40px" Width="40px"/>
+                                </CardHeaderAvatar>
+                                <CardHeaderContent>
+                                    <MudSkeleton Animation="Animation.Wave" Width="40%" />
+                                    <MudSkeleton Animation="Animation.Wave" Width="60%" />
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="250px" />
+                            <MudCardContent>
+                                <MudSkeleton Animation="Animation.Wave" />
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Height="30px" Width="30px" Class="ml-2 mb-2" />
+                                <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Height="30px" Width="30px" Class="ml-3 mb-2" />
+                            </MudCardActions>
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+        }
+    </div>
+}
+
+
 @code {
     
     [Parameter]
     public string searchQuery { get; set; }
+
+    private bool _isLoading { get; set; } = true;
+
+    private bool _isTable { get; set; } = false;
     
     private IReadOnlyCollection<ScrapingResultDTO> _results { get; set; }
     
@@ -52,6 +135,7 @@
     private async Task UpdateData()
     {
         _results = await Scraper.Find(new ScrapingRequest(searchQuery));
+        _isLoading = false;
         StateHasChanged();
     }
 
@@ -62,7 +146,7 @@
             if (!(string.IsNullOrWhiteSpace(searchQuery) && string.IsNullOrEmpty(searchQuery)))
             {
                 await UpdateData();
-                Logger.LogInformation($"Найдено {_results.Count} товаров");
+                Logger.LogInformation($"Найдено {_results?.Count ?? 0} товаров");
             }
         }
     }

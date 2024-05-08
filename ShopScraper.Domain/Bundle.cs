@@ -5,6 +5,8 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Playwright;
+    using Redis.OM;
+    using Redis.OM.Contracts;
     using Services;
     using Services.ScrapingSources;
 
@@ -25,8 +27,9 @@
                 browserTask.Wait();
                 return browserTask.Result;
             });
-            
-            services.AddSingleton<Infrastructure>()
+
+            services.AddSingleton<IRedisConnectionProvider, RedisConnectionProvider>(p =>
+                new RedisConnectionProvider(configuration.GetRequiredSection("Redis:ConnectionString").Value!));
             
             return services;
         } 

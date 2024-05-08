@@ -2,18 +2,23 @@
 
 using Infrastructure.DTO;
 using Infrastructure.Interfaces;
+using Infrastructure.Models;
 using Microsoft.Extensions.Logging;
+using Redis.OM;
+using Redis.OM.Contracts;
 
 public class Scraper : IScraper
 {
     private readonly IScrapingSource[] _sources;
     private readonly ILogger<Scraper> _logger;
+    private readonly IRedisConnectionProvider _provider;
 
-    public Scraper(IEnumerable<IScrapingSource> sources, ILogger<Scraper> logger)
+    public Scraper(IEnumerable<IScrapingSource> sources, ILogger<Scraper> logger, IRedisConnectionProvider provider)
     {
         _sources = sources.ToArray();
         _logger = logger;
-        
+        _provider = provider;
+
         var count = _sources.TryGetNonEnumeratedCount(out var neCount) ? neCount : _sources.Count();
         if (count == 0)
         {
@@ -32,10 +37,13 @@ public class Scraper : IScraper
             _logger.LogInformation("Пришел пустой запрос на поиск");
             return [];
         }
-        
+
         _logger.LogInformation($"Делаем поиск по тексту \"{request.SearchQuery}\"");
         
         var results = await Task.WhenAll(_sources.Select(x => x.ScrapeDataForRequest(request)));
-        return results.SelectMany(x => x).ToArray();
+        var resultsArray = results.SelectMany(x => x).ToArray();
+            
+        _logger.LogInformation("Записали результаты в Redis");
+        return resultsArray;
     }
 }

@@ -120,6 +120,16 @@ public partial class VseInstrumentySource : IScrapingSource
             var page = await _browser.NewPageAsync();
             await page.GotoAsync($"{PrimaryUrl}{HttpUtility.UrlEncode(request.SearchQuery)}");
             await page.WaitForSelectorAsync("[data-qa='catalog-icon']");
+            await Task.WhenAll(
+                page.EvaluateAsync("""
+                                   var i = 0; setInterval(() => {
+                                       if (i < 20){
+                                           window.scrollTo(0, i++ * document.body.scrollHeight / 100)
+                                       }
+                                   }, 5); 
+                                   """),
+                Task.Delay(TimeSpan.FromSeconds(2)));
+            
             var htmlContent = await page.ContentAsync();
             await page.CloseAsync();
 
