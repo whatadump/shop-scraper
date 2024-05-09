@@ -11,9 +11,10 @@
 
 @code{
 
-    private async Task OnSearch(string searchQuery)
+    private Task OnSearch(string searchQuery)
     {
         Navigator.NavigateTo($"/search/{searchQuery}", true);
+        return Task.CompletedTask;
     }
 
 }

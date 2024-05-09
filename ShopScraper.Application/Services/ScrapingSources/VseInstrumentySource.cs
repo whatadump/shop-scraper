@@ -77,7 +77,7 @@ public partial class VseInstrumentySource : IScrapingSource
                 if (priceString is null || title is null || article is null || imageUrl is null ||
                     originalUrl is null)
                 {
-                    _logger.LogError("Один из распарсенных элементов оказался null");
+                    _logger.LogError("Один из распарсенных элементов оказался null"); 
                     return null;
                 }
 
@@ -110,8 +110,26 @@ public partial class VseInstrumentySource : IScrapingSource
         try
         {
             var page = await _browser.NewPageAsync();
-            await page.GotoAsync($"{PrimaryUrl}{HttpUtility.UrlEncode(request.SearchQuery)}");
-            await page.WaitForSelectorAsync("[data-qa='catalog-icon']");
+            
+
+            try
+            {
+                page.GotoAsync($"{PrimaryUrl}{HttpUtility.UrlEncode(request.SearchQuery)}");
+                await page.WaitForSelectorAsync("[data-qa='catalog-icon']").WaitAsync(TimeSpan.FromSeconds(10));
+            }
+            catch (TimeoutException)
+            {
+                _logger.LogError("Не дождались селектора [data-qa='catalog-icon']");
+                await page.CloseAsync();
+                return [];
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Упал запрос на ВсеИнструменты, {e.Message}");
+                await page.CloseAsync();
+                return [];
+            }
+            
             await Task.WhenAll(
                 page.EvaluateAsync("""
                                    var i = 0; setInterval(() => {

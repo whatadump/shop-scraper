@@ -38,8 +38,26 @@ public partial class MegastroySource : IScrapingSource
         }
 
         var page = await _browser.NewPageAsync();
-        await page.GotoAsync(string.Format(SearchTemplate, request.SearchQuery));
-        await page.WaitForSelectorAsync(".js-widget-name-search_productslist");
+
+        try
+        {
+            page.GotoAsync(string.Format(SearchTemplate, request.SearchQuery)).WaitAsync(TimeSpan.FromSeconds(10));
+            await page.WaitForSelectorAsync(".js-widget-name-search_productslist").WaitAsync(TimeSpan.FromSeconds(10));
+        }
+        catch (TimeoutException)
+        {
+            //_logger.LogError("Не дождались селектора .js-widget-name-search_productslist");
+            _logger.LogError("Не дождались селектора .js-widget-name-search_productslist");
+            await page.CloseAsync();
+            return [];
+        }
+        catch (Exception e)
+        {
+            _logger.LogError($"Упал запрос на Мегастрой, {e.Message}");
+            await page.CloseAsync();
+            return [];
+        }
+        
         var content = await page.ContentAsync();
         await page.CloseAsync();
         

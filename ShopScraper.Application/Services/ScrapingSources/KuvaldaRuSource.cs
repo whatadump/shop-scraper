@@ -38,8 +38,25 @@ public partial class KuvaldaRuSource : IScrapingSource
         }
 
         var page = await _browser.NewPageAsync();
-        await page.GotoAsync(string.Format(SearchTemplate, request.SearchQuery));
-        await page.WaitForSelectorAsync(".digi-products-grid");
+        
+        try
+        {
+            page.GotoAsync(string.Format(SearchTemplate, request.SearchQuery));
+            await page.WaitForSelectorAsync(".digi-products-grid").WaitAsync(TimeSpan.FromSeconds(10));
+        }
+        catch (TimeoutException)
+        {
+            _logger.LogError("Не дождались селектора .digi-products-grid");
+            await page.CloseAsync();
+            return [];
+        }
+        catch (Exception e)
+        {
+            _logger.LogError($"Упал запрос на КувалдаРу, {e.Message}");
+            await page.CloseAsync();
+            return [];
+        }
+        
         var content = await page.ContentAsync();
         await page.CloseAsync();
         
