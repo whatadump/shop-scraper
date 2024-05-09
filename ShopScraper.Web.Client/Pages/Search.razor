@@ -13,17 +13,17 @@
     <MudText Typo="Typo.h3" Class="fw-light">GigaMagazin</MudText>
     <SearchBar Initial="@searchQuery" Class="mt-5" OnSearch="@OnSearch"/>
 </div>
-<div class="w-100 d-flex justify-content-end">
-    <MudButtonGroup Variant="Variant.Filled" DisableElevation="true">
-        <MudIconButton OnClick="@(() => _isTable = false)" Icon="@Icons.Material.Filled.GridView"/>
-        <MudIconButton OnClick="@(() => _isTable = true)" Icon="@Icons.Material.Filled.List"/>
-    </MudButtonGroup>
-</div>
+@* <div class="w-100 d-flex justify-content-end"> *@
+@*     <MudButtonGroup Variant="Variant.Filled" DisableElevation="true"> *@
+@*         <MudIconButton OnClick="@(() => _isTable = false)" Icon="@Icons.Material.Filled.GridView"/> *@
+@*         <MudIconButton OnClick="@(() => _isTable = true)" Icon="@Icons.Material.Filled.List"/> *@
+@*     </MudButtonGroup> *@
+@* </div> *@
 
 @if (_isTable)
 {
     <MudPaper Class="mt-10">
-        <MudTable Sort T="ScrapingResultDTO" Items="_results">
+        <MudTable GroupHeaderStyle="background-color: #ddd" GroupHeaderClass="mt-4" GroupBy="_groupDefinition" SortLabel="" T="ScrapingResultDTO" Items="_results">
             <HeaderContent>
                 <MudTh>
                     Название
@@ -32,7 +32,13 @@
                     Ссылка
                 </MudTh>
                 <MudTh>
-                    Изображение
+                    Стоимость
+                </MudTh>
+                <MudTh>
+                    Артикул
+                </MudTh>
+                <MudTh>
+                    Магазин
                 </MudTh>
             </HeaderContent>
             <RowTemplate>
@@ -43,35 +49,52 @@
                     <MudLink Href="@context.OriginalUrl" Target="_blank">Ссылка...</MudLink>
                 </MudTd>
                 <MudTd>
-                    <MudImage Src="@context.ImageUrl" Width="30" Height="30"/>
+                    <span class="fw-bold">@context.Price.ToString(CultureInfo.InvariantCulture) р.</span>
+                </MudTd>
+                <MudTd>
+                    @context.Article
+                </MudTd>
+                <MudTd>
+                    @context.SourceName
                 </MudTd>
             </RowTemplate>
+            <GroupHeaderTemplate>
+                <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer" colspan="6">
+                    Товаров в группе: @context.Items.Count()
+                </MudTh>
+            </GroupHeaderTemplate>
             <LoadingContent>
                 <MudSkeleton Animation="Animation.Wave"/>
             </LoadingContent>
         </MudTable>
     </MudPaper>
 }
-@if (!_isTable && _results is { Count: >0 })
-{
-    <MudGrid Class="mt-10">
-        @foreach (var item in _results)
-        {
-            <MudItem xs="12" md="3">
-                <MudCard>
-                    <MudCardHeader>
-                        <MudChip Size="Size.Small">@item.Article</MudChip>
-                    </MudCardHeader>
-                    <MudCardMedia Image="@item.ImageUrl"/>
-                    <MudCardContent>
-                        <MudText Typo="Typo.body2">@(item.Title[..int.Min(90, item.Title.Length)])...</MudText>
-                        <MudText Class="mt-4" Typo="Typo.h6">@item.Price.ToString(CultureInfo.InvariantCulture) р</MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-        }
-    </MudGrid>
-}
+@* @if (!_isTable && _results is { Count: >0 }) *@
+@* { *@
+@*     <MudGrid Class="mt-10"> *@
+@*         @foreach (var item in _results) *@
+@*         { *@
+@*             <MudItem xs="12" md="3"> *@
+@*                 <MudCard> *@
+@*                     <MudCardHeader> *@
+@*                         <MudChip Size="Size.Small">@item.SourceName</MudChip> *@
+@*                         <MudSpacer/> *@
+@*                         <MudText Typo="Typo.caption">@item.Article</MudText> *@
+@*                     </MudCardHeader> *@
+@*                     <MudCardMedia Image="@item.ImageUrl"/> *@
+@*                     <MudCardContent> *@
+@*                         <MudText Typo="Typo.body2">@(item.Title[..int.Min(90, item.Title.Length)])...</MudText> *@
+@*                         <MudText Class="mt-4" Typo="Typo.h6">@item.Price.ToString(CultureInfo.InvariantCulture) р</MudText> *@
+@*                     </MudCardContent> *@
+@*                     <MudCardActions> *@
+@*                         <MudSpacer/> *@
+@*                         <MudButton Href="@item.OriginalUrl" Variant="Variant.Outlined" Target="_blank" StartIcon="@Icons.Material.Filled.Link">Подробнее...</MudButton> *@
+@*                     </MudCardActions> *@
+@*                 </MudCard> *@
+@*             </MudItem> *@
+@*         } *@
+@*     </MudGrid> *@
+@* } *@
 
 @if (_isLoading)
 {
@@ -123,13 +146,13 @@
 
     private bool _isLoading { get; set; } = true;
 
-    private bool _isTable { get; set; } = false;
+    private bool _isTable { get; set; } = true;
     
     private IReadOnlyCollection<ScrapingResultDTO> _results { get; set; }
     
     private async Task OnSearch(string searchQuery)
     {
-        Navigation.NavigateTo($"/search/{searchQuery}");
+        Navigation.NavigateTo($"/search/{searchQuery}", true);
     }
 
     private async Task UpdateData()
@@ -138,6 +161,15 @@
         _isLoading = false;
         StateHasChanged();
     }
+    
+    private TableGroupDefinition<ScrapingResultDTO> _groupDefinition = new()
+    {
+        GroupName = "Group",
+        Indentation = false,
+        Expandable = false,
+        IsInitiallyExpanded = true,
+        Selector = (e) => e.GroupId
+    };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

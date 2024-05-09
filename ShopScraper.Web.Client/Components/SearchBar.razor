@@ -4,7 +4,7 @@
 
 <div Class="d-flex flex-row search @Class" >
     <MudIcon Size="Size.Medium"  Class="search-icon" Icon="@Icons.Material.Filled.Search"/>
-    <input placeholder="Введите запрос" type="text" @bind-value="_searchString"/>
+    <input @onkeydown="@OnKeyPressed" placeholder="Введите запрос" type="text" @bind-value="_searchString"/>
 </div>
 <div class="mt-3 search-bar d-flex justify-content-end">
     <MudButton OnClick="@OnClick" StartIcon="@Icons.Material.Filled.Search" Variant="Variant.Outlined" Size="Size.Large">Найти</MudButton>
@@ -76,6 +76,14 @@
         if (OnSearch is not null)
         {
             await OnSearch(_searchString);
+        }
+    }
+
+    private async Task OnKeyPressed(KeyboardEventArgs e)
+    {
+        if (e.Code is "Enter" or "NumpadEnter")
+        {
+            await OnClick();
         }
     }
 

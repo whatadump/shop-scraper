@@ -5,6 +5,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Options;
 
     public static class Bundle
     {
@@ -14,6 +15,11 @@
                 .UseLazyLoadingProxies()
                 .UseNpgsql(configuration.GetConnectionString("DefaultConnection"), 
                     options => options.MigrationsAssembly("ShopScraper.Migrations")));
+
+            services.AddSingleton<DefaultParserOptions>(_ => new DefaultParserOptions()
+            {
+                DefaultSearchResultTakePerPage = 5
+            });
             
             return services;
         }

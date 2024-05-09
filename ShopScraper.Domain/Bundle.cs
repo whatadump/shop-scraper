@@ -15,7 +15,13 @@
         public static IServiceCollection UseDomainServices(this IServiceCollection services, IConfigurationRoot configuration)
         {
             services.AddHostedService<MigratorHostedService>();
+            
+            //Источники товаров
             services.AddSingleton<IScrapingSource, VseInstrumentySource>();
+            services.AddSingleton<IScrapingSource, KuvaldaRuSource>();
+            services.AddSingleton<IScrapingSource, MegastroySource>();
+            
+            
             services.AddSingleton<IScraper, Scraper>();
             services.AddSingleton<IBrowser>(_ =>
             {
