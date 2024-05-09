@@ -1,18 +1,42 @@
-﻿namespace ShopScraper.Application;
-
-using Domain;
-using Infrastructure;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-public static class Bundle
+﻿namespace ShopScraper.Application
 {
-    public static IServiceCollection UseBusinessApplication(this IServiceCollection services, IConfigurationRoot configuration)
-    {
-        services.UseInfrastructureServices(configuration);
-        services.UseDomainServices(configuration);
+    using Interfaces;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Playwright;
+    using Options;
+    using Services;
+    using Services.ScrapingSources;
 
-        return services;
+    public static class Bundle
+    {
+        public static IServiceCollection UseDomainServices(this IServiceCollection services, IConfigurationRoot configuration)
+        {
+            
+            //Источники товаров
+            services.AddSingleton<IScrapingSource, VseInstrumentySource>();
+            services.AddSingleton<IScrapingSource, KuvaldaRuSource>();
+            services.AddSingleton<IScrapingSource, MegastroySource>();
+            
+            
+            services.AddSingleton<IScraper, Scraper>();
+            services.AddSingleton<IBrowser>(_ =>
+            {
+                var playwrightTask = Playwright.CreateAsync();
+                playwrightTask.Wait();
+                var playwright = playwrightTask.Result;
+
+                var browserTask = playwright.Chromium.LaunchAsync(new() { Headless = false });
+                browserTask.Wait();
+                return browserTask.Result;
+            });
+            
+            services.AddSingleton<DefaultParserOptions>(_ => new DefaultParserOptions()
+            {
+                DefaultSearchResultTakePerPage = 5
+            });
+            
+            return services;
+        } 
     }
-    
 }

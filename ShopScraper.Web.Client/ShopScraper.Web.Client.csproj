@@ -21,33 +21,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ShopScraper.Application\ShopScraper.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
       <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.4\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Components\UserBodyChart.razor" />
-    <_ContentIncludedByDefault Remove="Modals\TimetableBindingAddModal.razor" />
-    <_ContentIncludedByDefault Remove="Modals\TimetableBindingRedirectRemoveModal.razor" />
-    <_ContentIncludedByDefault Remove="Modals\TimetableTrainingInfoModal.razor" />
-    <_ContentIncludedByDefault Remove="Modals\UserBodyDataAddModal.razor" />
-    <_ContentIncludedByDefault Remove="Modals\UserBodyDataDeleteModal.razor" />
-    <_ContentIncludedByDefault Remove="Pages\Admin\Promocodes.razor" />
-    <_ContentIncludedByDefault Remove="Pages\Admin\Timetable.razor" />
-    <_ContentIncludedByDefault Remove="Pages\Admin\Trainings.razor" />
-    <_ContentIncludedByDefault Remove="Pages\Admin\Users.razor" />
-    <_ContentIncludedByDefault Remove="Pages\Guest\Home.razor" />
-    <_ContentIncludedByDefault Remove="Pages\Guest\Recomendations.razor" />
-    <_ContentIncludedByDefault Remove="Pages\Guest\Rules.razor" />
-    <_ContentIncludedByDefault Remove="Pages\Trainer\TrainerSchedule.razor" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\ShopScraper.Application\ShopScraper.Application.csproj" />
   </ItemGroup>
 </Project>

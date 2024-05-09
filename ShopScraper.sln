@@ -1,18 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopScraper.Infrastructure", "ShopScraper.Infrastructure\ShopScraper.Infrastructure.csproj", "{052B3B56-CCDF-4D59-B76B-3E881BE6074E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopScraper.Domain", "ShopScraper.Domain\ShopScraper.Domain.csproj", "{28317AF8-FA14-45EB-AD2A-86E4AC9740BF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopScraper.Application", "ShopScraper.Application\ShopScraper.Application.csproj", "{656C0859-0E5A-4B87-9740-67FE67795FE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopScraper.Application", "ShopScraper.Application\ShopScraper.Application.csproj", "{28317AF8-FA14-45EB-AD2A-86E4AC9740BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopScraper.Web", "ShopScraper.Web\ShopScraper.Web.csproj", "{3A561EFF-CACD-4ADA-9589-9B315FAE1DB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopScraper.Web.Client", "ShopScraper.Web.Client\ShopScraper.Web.Client.csproj", "{C99A8BC6-9E0B-4CC1-898C-092A8D35B3D0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{EFF8CFF5-8B78-48D7-97D0-13225FE905FF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopScraper.Migrations", "ShopScraper.Migrations\ShopScraper.Migrations.csproj", "{C6727B2F-6FFE-4D73-9EE1-11F45ABE74CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,18 +12,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{052B3B56-CCDF-4D59-B76B-3E881BE6074E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{052B3B56-CCDF-4D59-B76B-3E881BE6074E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{052B3B56-CCDF-4D59-B76B-3E881BE6074E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{052B3B56-CCDF-4D59-B76B-3E881BE6074E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28317AF8-FA14-45EB-AD2A-86E4AC9740BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28317AF8-FA14-45EB-AD2A-86E4AC9740BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28317AF8-FA14-45EB-AD2A-86E4AC9740BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28317AF8-FA14-45EB-AD2A-86E4AC9740BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{656C0859-0E5A-4B87-9740-67FE67795FE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{656C0859-0E5A-4B87-9740-67FE67795FE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{656C0859-0E5A-4B87-9740-67FE67795FE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{656C0859-0E5A-4B87-9740-67FE67795FE9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3A561EFF-CACD-4ADA-9589-9B315FAE1DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A561EFF-CACD-4ADA-9589-9B315FAE1DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A561EFF-CACD-4ADA-9589-9B315FAE1DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -40,15 +24,7 @@ Global
 		{C99A8BC6-9E0B-4CC1-898C-092A8D35B3D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C99A8BC6-9E0B-4CC1-898C-092A8D35B3D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C99A8BC6-9E0B-4CC1-898C-092A8D35B3D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6727B2F-6FFE-4D73-9EE1-11F45ABE74CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6727B2F-6FFE-4D73-9EE1-11F45ABE74CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6727B2F-6FFE-4D73-9EE1-11F45ABE74CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6727B2F-6FFE-4D73-9EE1-11F45ABE74CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{656C0859-0E5A-4B87-9740-67FE67795FE9} = {EFF8CFF5-8B78-48D7-97D0-13225FE905FF}
-		{28317AF8-FA14-45EB-AD2A-86E4AC9740BF} = {EFF8CFF5-8B78-48D7-97D0-13225FE905FF}
-		{052B3B56-CCDF-4D59-B76B-3E881BE6074E} = {EFF8CFF5-8B78-48D7-97D0-13225FE905FF}
-		{C6727B2F-6FFE-4D73-9EE1-11F45ABE74CE} = {EFF8CFF5-8B78-48D7-97D0-13225FE905FF}
 	EndGlobalSection
 EndGlobal
